@@ -1,4 +1,4 @@
-GG Core
-=======
+GG - Git Groups
+===============
 
-Here are the files for `gg`.
+Manage multiple git repositories quicker and easier.
