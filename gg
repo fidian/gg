@@ -40,13 +40,18 @@ EOF
 findMetaDir() {
     while [[ -n "$rootDir" ]]; do
         if [[ -d "$rootDir/$metaDir" ]]; then
+            metaDir="$rootDir/$metaDir"
             return 0
         fi
 
         rootDir=${rootDir%/*}
     done
 
-    metaDir="$rootDir/$metaDir"
+    # Allow the root to be in / (highly inadvisable, but possible)
+    if [[ -d "$rootDir/$metaDir" ]]; then
+        metaDir="$rootDir/$metaDir"
+        return 0
+    fi
 
     return 1
 }
