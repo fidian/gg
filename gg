@@ -1,0 +1,121 @@
+#!/usr/bin/env bash
+#/ Git Groups
+#/
+#/ Manage a collection of multiple git repositories collectively.
+#/
+#/ Very similar to the "repo" project that governs Android.  This is a
+#/ lighter-weight alternative and written to not require Python.
+#/
+#/ Usage:
+#/
+#/    gg COMMAND [OPTIONS]
+#/
+#
+# Want more?  Head over to the website
+#
+# https://github.com/fidian/gg - This loader script
+# https://github.com/fidian/gg-core - The bulk of the project
+
+set -eEu -o pipefail
+shopt -s extdebug
+IFS=$'\n\t'
+
+programName=gg
+programVersion=1  # Change when internals are updated
+metaDir=.gg  # Updated to a full path later
+rootDir=$PWD  # Updated to auto detect parent later
+coreRepo=https://github.com/fidian/gg-core.git
+
+errorNoMetaDir() {
+    cat >&2 <<EOF
+Must initialize a folder first.
+
+Use:  $programName init URL
+
+For more assistance:  $programName help
+EOF
+    return 1
+}
+
+findMetaDir() {
+    while [[ -n "$rootDir" ]]; do
+        if [[ -d "$rootDir/$metaDir" ]]; then
+            return 0
+        fi
+
+        rootDir=${rootDir%/*}
+    done
+
+    metaDir="$rootDir/$metaDir"
+
+    return 1
+}
+
+cmdHelp() {
+    grep "^#/" "$0" | cut -b 4-
+    echo "Commands:"
+    echo ""
+
+    if ! commandHelp 2>/dev/null; then
+        cat << EOF
+help         Show this help message.  A much better help message appears
+             after you init a repository.
+init URL     Initialize a group of repositories.  The URL is the location of
+             a git repository.
+EOF
+    fi
+}
+
+cmdInit() {
+    if [[ -z "${1-}" ]]; then
+        echo "Must specify a URL" >&2
+        return 1
+    fi
+
+    status "Creating meta dir: $metaDir"
+    mkdir -p "$metaDir"
+
+    status "Cloning gg-core: $1"
+    git clone "$coreRepo" "$metaDir/gg-core"
+
+    status "Cloning manifest: $1"
+    git clone "$1" "$metaDir/manifest"
+
+    status "Initialization complete."
+    echo "Your next action will probably be: $programName sync"
+}
+
+status() {
+    echo "*** ""$@"
+}
+
+if [[ -z "${1-}" ]] || [[ "$1" == "help" ]]; then
+    if ! findMetaDir; then
+        cmdHelp
+        exit
+    fi
+
+    loadCore
+    cmdHelp
+    exit
+fi
+
+if [[ "$1" == "init" ]]; then
+    shift
+    cmdInit "$@"
+    exit
+fi
+
+if ! findMetaDir; then
+    errorNoMetaDir
+    exit
+fi
+
+for F in "$metaDir/gg-core/lib/"* "$metaDir/gg-core/commands/"*; do
+    if [[ -f "$F" ]] && [[ "$(head -n 1 "$F")" == "#!"* ]]; then
+        . "$F"
+    fi
+done
+
+manifestLoad
+commandRun "$@"
