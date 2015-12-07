@@ -56,6 +56,16 @@ findMetaDir() {
     return 1
 }
 
+loadCore() {
+    for F in "$metaDir/gg-core/lib/"* "$metaDir/gg-core/commands/"*; do
+        if [[ -f "$F" ]] && [[ "$(head -n 1 "$F")" == "#!"* ]]; then
+            . "$F"
+        fi
+    done
+
+    manifestLoad
+}
+
 cmdHelp() {
     grep "^#/" "$0" | cut -b 4-
     echo "Commands:"
@@ -116,11 +126,5 @@ if ! findMetaDir; then
     exit
 fi
 
-for F in "$metaDir/gg-core/lib/"* "$metaDir/gg-core/commands/"*; do
-    if [[ -f "$F" ]] && [[ "$(head -n 1 "$F")" == "#!"* ]]; then
-        . "$F"
-    fi
-done
-
-manifestLoad
+loadCore
 commandRun "$@"
