@@ -52,7 +52,7 @@ Examples:
 
 ### gg init REMOTE
 
-Initialize the current directory.  `REMOTE` is the URL to a git repository that has a [manifest].  Downloads the [manifest] and [`gg-core`] into a `.gg/` folder.
+Initialize the current directory.  `REMOTE` is the URL to a git repository that has a [manifest].  Downloads the [manifest] and [gg-core] into a `.gg/` folder.
 
 Once a folder is initialized, additional commands show up in `gg help`.
 
@@ -63,7 +63,7 @@ Examples:
 
 ### gg sync
 
-Synchronize the [manifest], [`gg-core`] and every repository listed in the manifest.  First it executes a `git fetch` to pull in the remote's history.  After that, it attempts a rebase.  If the rebase fails, it falls back to a pull and push with possible merge conflicts detected and then they would need to be handled by hand.
+Synchronize the [manifest], [gg-core] and every repository listed in the manifest.  First it executes a `git fetch` to pull in the remote's history.  After that, it attempts a rebase.  If the rebase fails, it falls back to a pull and push with possible merge conflicts detected and then they would need to be handled by hand.
 
 Can be executed anywhere inside an initialized directory.
 
