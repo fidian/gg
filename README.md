@@ -41,7 +41,7 @@ Command Reference
 The `help` and `init` commands can be used anywhere.  All others can be executed from anywhere within an initialized folder, including inside any subdirectory.
 
 
-### `gg help`
+### gg help
 
 Shows a help message.  When used in an initialized directory, the help message will list many more commands.
 
@@ -50,7 +50,7 @@ Examples:
     gg help
 
 
-### `gg init REMOTE`
+### gg init REMOTE
 
 Initialize the current directory.  `REMOTE` is the URL to a git repository that has a [manifest].  Downloads the [manifest] and [`gg-core`] into a `.gg/` folder.
 
@@ -61,7 +61,7 @@ Examples:
     gg init http://github.com/example/your-manifest.git
 
 
-### `gg sync`
+### gg sync
 
 Synchronize the [manifest], [`gg-core`] and every repository listed in the manifest.  First it executes a `git fetch` to pull in the remote's history.  After that, it attempts a rebase.  If the rebase fails, it falls back to a pull and push with possible merge conflicts detected and then they would need to be handled by hand.
 
