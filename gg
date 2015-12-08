@@ -19,7 +19,6 @@
 set -eEu -o pipefail
 shopt -s extdebug
 IFS=$'\n\t'
-ggVersion=1
 
 programName=gg
 programVersion=2  # Change when internals are updated
