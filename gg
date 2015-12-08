@@ -22,7 +22,7 @@ IFS=$'\n\t'
 ggVersion=1
 
 programName=gg
-programVersion=1  # Change when internals are updated
+programVersion=2  # Change when internals are updated
 metaDir=.gg  # Updated to a full path later
 rootDir=$PWD  # Updated to auto detect parent later
 coreRepo=https://github.com/fidian/gg-core.git
@@ -127,5 +127,6 @@ if ! findMetaDir; then
     exit
 fi
 
+cd "$rootDir"
 loadCore
 commandRun "$@"
