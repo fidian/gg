@@ -61,6 +61,35 @@ Examples:
     gg init http://github.com/example/your-manifest.git
 
 
+### gg status
+
+Shows the status of your repositories.  If a repository is clean, this only shows a short message.  If it is dirty it shows the entire `git status` message.
+
+Examples:
+
+    gg status
+
+Result:
+
+    *** .gg/gg-core: clean
+    *** .gg/manifest: clean
+    *** projects/starlight-mandible: dirty
+    On branch gg
+    Your branch is up-to-date with 'origin/gg'.
+    Changes not staged for commit:
+      (use "git add <file>..." to update what will be committed)
+      (use "git checkout -- <file>..." to discard changes in working directory)
+
+        modified:   Makefile
+        modified:   client.cpp
+        modified:   app-engine.cpp
+
+    no changes added to commit (use "git add" and/or "git commit -a")
+    *** protected: clean
+    *** tsunami/project: clean
+    *** tsunami/configs: clean
+
+
 ### gg sync
 
 Synchronize the [manifest], [gg-core] and every repository listed in the manifest.  First it executes a `git fetch` to pull in the remote's history.  After that, it attempts a rebase.  If the rebase fails, it falls back to a pull and push with possible merge conflicts detected and then they would need to be handled by hand.
