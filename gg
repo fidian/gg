@@ -73,19 +73,51 @@ cmdHelp() {
 
     if ! commandHelp 2>/dev/null; then
         cat << EOF
-help         Show this help message.  A much better help message appears
-             after you init a repository.
-init URL     Initialize a group of repositories.  The URL is the location of
-             a git repository.
+   help            Show this help message.  A much better help message
+                   appears after you init a repository.
+   init URL [DIR]  Initialize a group of repositories.  The URL is the
+                   location of a git repository and DIR is where it goes.
+                   The DIR can be automatically inferred from URL.
 EOF
     fi
 }
 
 cmdInit() {
+    local dest files
+
     if [[ -z "${1-}" ]]; then
         echo "Must specify a URL" >&2
         return 1
     fi
+
+    if [[ -z "${2-}" ]]; then
+        dest=${1-}
+        dest=${dest%%#*}
+        dest=${dest##*/}
+        dest=${dest%.git}
+    else
+        dest=$2
+    fi
+
+    if [[ -d "$dest" ]]; then
+        if [[ -e "$dest/.gg" ]]; then
+            echo "$dest is already an initialized gg folder." >&2
+            exit 1
+        fi
+
+        # Match against "*", ".*" and "..*" where it does not match against
+        # the directories "." nor "..".
+        files=("$dest"/* "$dest"/.[^.]* "$dest"/..?*)
+
+        if [[ -e "${files[0]}" ]] || [[ -e "${files[1]}" ]] || [[ -e "${files[2]}" ]]; then
+            echo "$dest is not an empty folder." >&2
+            exit 1
+        fi
+    else
+        mkdir "$dest"
+    fi
+
+    cd "$dest"
 
     status "Creating meta dir: $metaDir"
     mkdir -p "$metaDir"
