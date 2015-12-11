@@ -50,15 +50,28 @@ Examples:
     gg help
 
 
-### gg init REMOTE
+### gg init REMOTE [DEST]
 
 Initialize the current directory.  `REMOTE` is the URL to a git repository that has a [manifest].  Downloads the [manifest] and [gg-core] into a `.gg/` folder.
+
+* REMOTE - This is the git repository URL.  It's the same as what you'd use for "git clone".
+* DEST - Destination for the gg-initialized directory.
 
 Once a folder is initialized, additional commands show up in `gg help`.
 
 Examples:
 
+    # Sets up a gg directory in ./your-manifest
+    cd ~
     gg init http://github.com/example/your-manifest.git
+    cd your-manifest
+    gg sync
+
+    # Specify a directory
+    cd ~
+    gg init http://github.com/example/another.git the-destination
+    cd the-destination
+    gg sync
 
 
 ### gg status
