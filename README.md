@@ -41,7 +41,20 @@ Command Reference
 The `help` and `init` commands can be used anywhere.  All others can be executed from anywhere within an initialized folder, including inside any subdirectory.
 
 
-### gg help
+### `gg checkout [BRANCH]`
+
+Checks out the given branch in all repositories. When `BRANCH` is not specified, the default branch from the [manifest] is used.
+
+Examples:
+
+    # Check out the default branch in each repository
+    gg checkout
+
+    # Check out the develop-testing branch in repositories that have that branch
+    gg checkout develop-testing
+
+
+### `gg help`
 
 Shows a help message.  When used in an initialized directory, the help message will list many more commands.
 
@@ -50,7 +63,7 @@ Examples:
     gg help
 
 
-### gg init REMOTE [DEST]
+### `gg init REMOTE [DEST]`
 
 Initialize the current directory.  `REMOTE` is the URL to a git repository that has a [manifest].  Downloads the [manifest] and [gg-core] into a `.gg/` folder.
 
@@ -74,7 +87,16 @@ Examples:
     gg sync
 
 
-### gg status
+### `gg pull`
+
+Issues a `git pull` on the [manifest], [gg-core], and every repository listed in the [manifest].
+
+Examples:
+
+    gg pull
+
+
+### `gg status`
 
 Shows the status of your repositories.  If a repository is clean, this only shows a short message.  If it is dirty it shows the entire `git status` message.
 
@@ -103,11 +125,9 @@ Result:
     *** tsunami/configs: clean
 
 
-### gg sync
+### `gg sync`
 
-Synchronize the [manifest], [gg-core] and every repository listed in the manifest.  First it executes a `git fetch` to pull in the remote's history.  After that, it attempts a rebase.  If the rebase fails, it falls back to a pull and push with possible merge conflicts detected and then they would need to be handled by hand.
-
-Can be executed anywhere inside an initialized directory.
+Synchronize the [manifest], [gg-core], and every repository listed in the [manifest].  First it executes a `git fetch` to pull in the remote's history.  After that, it attempts a rebase.  When successful, your changes are pushed to the remote. If the rebase fails, it falls back to a standard pull and push, possibly creating merge conflicts. There's detection for the merge conflicts, but they must be resolved by hand.
 
 Examples:
 
