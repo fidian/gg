@@ -34,11 +34,15 @@ Simply download `gg` and put it in your path.
     # is in your path.
     mv gg ~/bin
 
+There is also a [getting started] guide available.
+
 
 Command Reference
 -----------------
 
 The `help` and `init` commands can be used anywhere.  All others can be executed from anywhere within an initialized folder, including inside any subdirectory.
+
+It is important to note that there are environment variables and config files that alter the behavior of these commands. Read more about [configuration].
 
 
 ### `gg checkout [BRANCH]`
@@ -96,6 +100,16 @@ Examples:
     gg pull
 
 
+### `gg run <command> [args]`
+
+Runs a command in all of the repositories. The command is executed at the root of each of the repositories.
+
+Examples:
+
+    # Shows the root of each directory
+    gg run ls -l
+
+
 ### `gg status`
 
 Shows the status of your repositories.  If a repository is clean, this only shows a short message.  If it is dirty it shows the entire `git status` message.
@@ -134,5 +148,7 @@ Examples:
     gg sync
 
 
+[configuration]: https://github.com/fidian/gg-core/blob/master/doc/config.md
+[getting started]: https://github.com/fidian/gg-core/blob/master/doc/getting-started.md
 [gg-core]: https://github.com/fidian/gg-core
 [manifest]: https://github.com/fidian/gg-core/blob/master/doc/manifest.md
